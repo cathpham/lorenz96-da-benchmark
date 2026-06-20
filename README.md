@@ -2,7 +2,7 @@
 
 Companion code for:
 > "A Survey of Nonlinear Filtering Methods for Data Assimilation and Recent Advances in Generative AI-Enabled Score Filters"
-> Thu Pham Duong and Feng Bao, Florida State University, 2025
+> Cath Pham, Florida State University, 2025
 
 Implements and benchmarks four data assimilation filters on the Lorenz-96 system with nonlinear arctan observations:
 - **PF** — Bootstrap Particle Filter (Gordon et al. 1993)
@@ -129,3 +129,39 @@ Full benchmark (4 filters × 5 dimensions × 10 seeds) takes approximately **6�
 ---
 
 ## Repository Structure
+---
+
+## Reproducing Paper Figures
+
+All results are fully reproducible from fixed seeds. Each seed loop starts with:
+
+```python
+torch.manual_seed(seed)
+np.random.seed(seed)
+```
+
+ensuring identical results across machines given the same PyTorch version.
+
+---
+
+## Citation
+
+If you use this code, please cite:
+
+```bibtex
+@article{phamdong2025survey,
+  title={A Survey of Nonlinear Filtering Methods for Data Assimilation and Recent Advances in Generative AI-Enabled Score Filters},
+  author={Pham, Cath,
+  journal={arXiv preprint},
+  year={2025}
+}
+```
+
+---
+
+## References
+
+- Gordon, N.J., Salmond, D.J., Smith, A.F.M. (1993). Novel approach to nonlinear/non-Gaussian Bayesian state estimation. *IEE Proceedings F*, 140(2), 107–113.
+- Evensen, G. (1994). Sequential data assimilation with a nonlinear quasi-geostrophic model using Monte Carlo methods to forecast error statistics. *Journal of Geophysical Research*, 99(C5), 10143–10162.
+- Hunt, B.R., Kostelich, E.J., Szunyogh, I. (2007). Efficient data assimilation for spatiotemporal chaos: A local ensemble transform Kalman filter. *Physica D*, 230(1-2), 112–126.
+- Bao, F., et al. (2024). An Ensemble Score Filter for Tracking High-Dimensional Nonlinear Dynamical Systems. *arXiv preprint*.
