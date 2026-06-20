@@ -1,0 +1,18 @@
+# numpy result files
+results/*.npy
+*.npy
+
+# figure outputs
+paper/figures/*.png
+*.png
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+*.ipynb
+
+# OS
+.DS_Store
+Thumbs.db
