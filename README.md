@@ -149,7 +149,7 @@ ensuring identical results across machines given the same PyTorch version.
 If you use this code, please cite:
 
 ```bibtex
-@article{phamdong2025survey,
+@article{pham2026survey,
   title={A Survey of Nonlinear Filtering Methods for Data Assimilation and Recent Advances in Generative AI-Enabled Score Filters},
   author={Pham, Cath,
   journal={arXiv preprint},
