@@ -2,7 +2,7 @@
 
 Companion code for:
 > "A Survey of Nonlinear Filtering Methods for Data Assimilation and Recent Advances in Generative AI-Enabled Score Filters"
-> Cath Pham, Florida State University, 2025
+> Cath Pham, Florida State University, 2026
 
 Implements and benchmarks four data assimilation filters on the Lorenz-96 system with nonlinear arctan observations:
 - **PF** — Bootstrap Particle Filter (Gordon et al. 1993)
