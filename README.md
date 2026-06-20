@@ -128,9 +128,6 @@ Full benchmark (4 filters × 5 dimensions × 10 seeds) takes approximately **6�
 
 ---
 
-## Repository Structure
----
-
 ## Reproducing Paper Figures
 
 All results are fully reproducible from fixed seeds. Each seed loop starts with:
