@@ -10,7 +10,7 @@ torch.set_default_dtype(DTYPE)
 device = torch.device("cpu")
 
 F             = 8
-n_dim         = 1000        # change to 50, 100, 500, 1000
+n_dim         = 10      # change to 10, 50, 100, 500, 1000
 dyn_sigma     = 0.1
 dt            = 0.005
 filtering_steps = 500
@@ -48,7 +48,7 @@ def obs_fn(x):
 #
 # Regularized diffusion schedule (Eq. 37):
 #   alpha_bar(tau) = 1 - tau*(1 - eps_alpha)
-#   beta_bar^2(tau) = eps_beta + tau*(1 - eps_beta)
+#   beta_bar^2(tau) = tau
 #
 # Prior score: batch-size-1 MC estimator (Eq. 38, paper's practical implementation)
 #   S_prior(z, x0, tau) = -(z - alpha_bar*x0) / beta_bar^2
@@ -68,15 +68,13 @@ def score_prior(xt, x0, t):
     return -(xt - alpha_bar(t) * x0) / beta2_bar(t)
 
 def score_likelihood(xt, obs, t):
-    # damping h(tau) = 1 - tau
-    # J_arctan(z) = diag(1/(1+z^2))
     return (1.0 - t) * (-(torch.atan(xt) - obs) / obs_sigma**2
                          * (1.0 / (1.0 + xt**2)))
 
 def reverse_SDE(x0, obs):
     dt_s = 1.0 / euler_steps
-    xt   = torch.randn_like(x0)     # initialize from N(0, I)
-    t    = 1.0                       # start at tau = 1
+    xt   = torch.randn_like(x0)
+    t    = 1.0
 
     for _ in range(euler_steps):
         b_t  = drift_coeff(t)
@@ -85,7 +83,6 @@ def reverse_SDE(x0, obs):
 
         score = score_prior(xt, x0, t) + score_likelihood(xt, obs, t)
 
-        # Euler-Maruyama reverse step
         xt = xt - dt_s * (b_t * xt - g2_t * score) \
              + np.sqrt(dt_s) * g_t * torch.randn_like(xt)
         t -= dt_s
@@ -96,6 +93,7 @@ def reverse_SDE(x0, obs):
 # MULTI-SEED LOOP
 # ==============================================================================
 all_rmse = []
+all_time = []
 t_total  = time.time()
 
 for seed in range(n_seeds):
@@ -111,7 +109,11 @@ for seed in range(n_seeds):
     x_ensemble = torch.randn(ensemble_size, n_dim, device=device)
 
     rmse_list = []
+    time_list = []
+
     for step in range(filtering_steps):
+        t_step = time.time()
+
         # deterministic truth
         state_true = drift_step(state_true, dt)
         # stochastic ensemble
@@ -123,6 +125,7 @@ for seed in range(n_seeds):
 
         x_mean = x_ensemble.mean(dim=0)
         rmse   = torch.sqrt(torch.mean((x_mean - state_true)**2)).item()
+        time_list.append(time.time() - t_step)
 
         if not np.isfinite(rmse) or rmse > 1000:
             print(f"  Seed {seed} diverged at step {step}")
@@ -131,6 +134,7 @@ for seed in range(n_seeds):
         rmse_list.append(rmse)
 
     all_rmse.append(rmse_list)
+    all_time.append(time_list)
     print(f"Seed {seed+1}/{n_seeds} | RMSE(last50)={np.nanmean(rmse_list[-50:]):.4f} "
           f"| {time.time()-t_total:.1f}s")
 
@@ -138,7 +142,10 @@ for seed in range(n_seeds):
 # SAVE
 # ==============================================================================
 all_rmse = np.array(all_rmse)
+all_time = np.array(all_time)
 np.save(f"rmse_ensf_d{n_dim}.npy", all_rmse)
+np.save(f"time_ensf_d{n_dim}.npy", all_time)
 print(f"\nSaved rmse_ensf_d{n_dim}.npy  shape={all_rmse.shape}")
+print(f"Saved time_ensf_d{n_dim}.npy  shape={all_time.shape}")
 print(f"Mean RMSE (last 50): {np.nanmean(all_rmse[:,-50:]):.4f} "
       f"+/- {np.nanstd(np.nanmean(all_rmse[:,-50:],axis=1)):.4f}")
