@@ -62,7 +62,7 @@ def enkf_update(ensemble, obs):
 # ENSF
 # ==============================================================================
 def alpha_bar(t):   return 1.0 - (1.0 - eps_alpha) * t
-def beta2_bar(t):   return t
+def beta2_bar(t):   return eps_beta + t * (1.0 - eps_beta)
 def drift_coeff(t): return -(1.0 - eps_alpha) / alpha_bar(t)
 def diff_coeff(t):  return np.sqrt(1.0 - 2.0 * drift_coeff(t) * beta2_bar(t))
 
