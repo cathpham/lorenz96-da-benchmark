@@ -19,9 +19,10 @@ obs_gap       = 1
 ensemble_size = 100
 n_seeds       = 10
 
-# EnSF hyperparameters (Bao et al. 2024, Eq. 37)
+# EnSF hyperparameters 
 euler_steps = 50      # K = number of reverse SDE steps
 eps_alpha   = 0.05    # regularization for alpha schedule
+eps_beta    = 0.001   # regularization for beta schedule 
 
 print(f"EnSF | d={n_dim}, N={ensemble_size}, seeds={n_seeds}, K={euler_steps}")
 
@@ -46,21 +47,21 @@ def obs_fn(x):
 # Ref: Bao et al. (2024), "An Ensemble Score Filter for Tracking
 #      High-Dimensional Nonlinear Dynamical Systems"
 #
-# Regularized diffusion schedule (Eq. 37):
+# Regularized diffusion schedule:
 #   alpha_bar(tau) = 1 - tau*(1 - eps_alpha)
-#   beta_bar^2(tau) = tau
+#   beta_bar^2(tau) = eps_beta + tau*(1 - eps_beta)
 #
-# Prior score: batch-size-1 MC estimator (Eq. 38, paper's practical implementation)
+# Prior score: batch-size-1 MC estimator
 #   S_prior(z, x0, tau) = -(z - alpha_bar*x0) / beta_bar^2
 #
-# Likelihood score with damping h(tau) = 1 - tau (Eq. 33-34):
+# Likelihood score with damping h(tau) = 1 - tau:
 #   S_like(z, tau) = h(tau) * J_arctan(z)^T * Sigma^{-1} * (y - arctan(z))
 #   where J_arctan(z) = diag(1/(1+z^2))
 #
-# Reverse SDE — Euler-Maruyama (Eq. 31)
+# Reverse SDE — Euler-Maruyama
 # ==============================================================================
 def alpha_bar(t):    return 1.0 - (1.0 - eps_alpha) * t
-def beta2_bar(t):    return t
+def beta2_bar(t):    return eps_beta + t * (1.0 - eps_beta)
 def drift_coeff(t):  return -(1.0 - eps_alpha) / alpha_bar(t)
 def diff_coeff(t):   return np.sqrt(1.0 - 2.0 * drift_coeff(t) * beta2_bar(t))
 
