@@ -86,7 +86,7 @@ All parameters are defined at the top of each filter script:
 
 ### LETKF only
 
-Localization and inflation are set automatically per dimension via a lookup table tuned following Hunt et al. (2007):
+Localization and inflation are set automatically per dimension via a lookup table tuned:
 
 | d | inflation | neighbor_size |
 |---|---|---|
