@@ -82,6 +82,7 @@ All parameters are defined at the top of each filter script:
 |---|---|---|
 | `euler_steps` | 50 | Number of reverse SDE steps K |
 | `eps_alpha` | 0.05 | Alpha schedule regularization |
+| `eps_beta` | 0.001 | Beta schedule regularization |
 
 ### LETKF only
 
