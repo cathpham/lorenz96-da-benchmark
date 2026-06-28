@@ -12,16 +12,6 @@ Implements and benchmarks four data assimilation filters on the Lorenz-96 system
 
 ---
 
-## Requirements
-
-```bash
-pip install torch numpy matplotlib
-```
-
-Tested with Python 3.10, PyTorch 2.1, NumPy 1.24.
-
----
-
 ## Quickstart
 
 ### Step 1 — Run filters
@@ -113,32 +103,6 @@ For dimensions not in the table, the script defaults to `inflation=1.05` and `ne
 | Seeds | 10 independent seeds (0 through 9) |
 | Reported RMSE | Mean over last 50 steps (steady state) |
 | Confidence bands | ±1 std across seeds |
-
----
-
-## Expected Runtime (single seed, CPU)
-
-| Filter | d=10 | d=100 | d=500 | d=1000 |
-|---|---|---|---|---|
-| PF | <1s | ~5s | ~5s | ~5s |
-| EnKF | <1s | ~1s | ~6s | ~33s |
-| EnSF | ~5s | ~8s | ~24s | ~42s |
-| LETKF | <1s | ~2min | ~8min | ~15min |
-
-Full benchmark (4 filters × 5 dimensions × 10 seeds) takes approximately **6–8 hours** on a standard CPU.
-
----
-
-## Reproducing Paper Figures
-
-All results are fully reproducible from fixed seeds. Each seed loop starts with:
-
-```python
-torch.manual_seed(seed)
-np.random.seed(seed)
-```
-
-ensuring identical results across machines given the same PyTorch version.
 
 ---
 
