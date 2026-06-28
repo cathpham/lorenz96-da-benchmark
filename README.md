@@ -12,42 +12,26 @@ Implements and benchmarks four data assimilation filters on the Lorenz-96 system
 
 ---
 
-## Quickstart
+## Files Organization
 
-### Step 1 — Run filters
+1. `filters` contains the implementation of all four data assimilation filters.
+   - `pf_final.py` runs the Bootstrap Particle Filter (Gordon et al. 1993).
+   - `enkf_final.py` runs the Ensemble Kalman Filter (Evensen 1994).
+   - `ensf_final.py` runs the Ensemble Score Filter (Bao et al. 2024).
+   - `letkf_final.py` runs the Local Ensemble Transform Kalman Filter (Hunt et al. 2007).
+   - Set `n_dim` at the top of each script, then run for each dimension in `[10, 50, 100, 500, 1000]`.
+   - Each run saves `rmse_{filter}_d{n_dim}.npy` and `time_{filter}_d{n_dim}.npy` to the working directory.
+   - Move all `.npy` files into `results/` before generating figures.
 
-Open each filter script, set `n_dim` at the top, then run:
+2. `figures` contains the plotting scripts for all paper figures.
+   - `fig1_rmse_vs_dim.py` generates Figure 1: RMSE vs state dimension with confidence bands.
+   - `fig2_rmse_vs_step.py` generates Figure 2: RMSE over filtering steps at `d = 10, 50, 100, 500`.
+   - `fig3_ensf_vs_letkf.py` generates Figure 3: EnSF vs LETKF accuracy and wall-clock cost.
+   - `fig4_trajectory_spread.py` generates Figure 4: trajectory tracking and ensemble spread at `d = 10`.
+   - Run all figure scripts from inside the `results/` folder.
 
-```bash
-python filters/pf_final.py
-python filters/enkf_final.py
-python filters/ensf_final.py
-python filters/letkf_final.py
-```
-
-Run each script once per dimension by changing `n_dim` at the top of the file:
-
-```python
-n_dim = 10    # change to 50, 100, 500, 1000
-```
-
-Each run saves `rmse_{filter}_d{n_dim}.npy` to the working directory.
-LETKF and EnSF also save `time_{filter}_d{n_dim}.npy` for the cost comparison.
-Move all `.npy` files into `results/` when done.
-
-### Step 2 — Generate figures
-
-Run each figure script from inside the `results/` folder:
-
-```bash
-cd results/
-python ../figures/fig1_rmse_vs_dim.py
-python ../figures/fig2_rmse_vs_step.py
-python ../figures/fig3_ensf_vs_letkf.py
-python ../figures/fig4_trajectory_spread.py
-```
-
-Figures are saved as `.png` files in the current directory.
+3. `results` stores all `.npy` output files from the filter runs.
+   - All figure scripts read from this folder automatically.
 
 ---
 
