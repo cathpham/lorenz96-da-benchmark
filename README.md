@@ -99,7 +99,7 @@ If you use this code, please cite:
   title={A Survey of Nonlinear Filtering Methods for Data Assimilation and Recent Advances in Generative AI-Enabled Score Filters},
   author={Pham, Cath,
   journal={arXiv preprint},
-  year={2025}
+  year={2026}
 }
 ```
 
