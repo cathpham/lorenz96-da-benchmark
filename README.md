@@ -20,18 +20,18 @@ Implements and benchmarks four data assimilation filters on the Lorenz-96 system
    - `ensf_final.py` runs the Ensemble Score Filter (Bao et al. 2024).
    - `letkf_final.py` runs the Local Ensemble Transform Kalman Filter (Hunt et al. 2007).
    - Set `n_dim` at the top of each script, then run for each dimension in `[10, 50, 100, 500, 1000]`.
-   - Each run saves `rmse_{filter}_d{n_dim}.npy` and `time_{filter}_d{n_dim}.npy` to the working directory.
-   - Move all `.npy` files into `results/` before generating figures.
+   - Each run saves `rmse_{filter}_d{n_dim}.npy` and `time_{filter}_d{n_dim}.npy` locally. These files are not uploaded to this repository but are required to run the figure scripts.
 
 2. `figures` contains the plotting scripts for all paper figures.
    - `fig1_rmse_vs_dim.py` generates Figure 1: RMSE vs state dimension with confidence bands.
    - `fig2_rmse_vs_step.py` generates Figure 2: RMSE over filtering steps at `d = 10, 50, 100, 500`.
    - `fig3_ensf_vs_letkf.py` generates Figure 3: EnSF vs LETKF accuracy and wall-clock cost.
    - `fig4_trajectory_spread.py` generates Figure 4: trajectory tracking and ensemble spread at `d = 10`.
-   - Run all figure scripts from inside the `results/` folder.
+   - Run all filter scripts first to generate the `.npy` files, then place them in the same directory as the figure scripts before running.
 
-3. `results` stores all `.npy` output files from the filter runs.
-   - All figure scripts read from this folder automatically.
+3. `results` contains the final paper figures as `.png` files.
+   - Figures can be viewed directly without running any code.
+   - To regenerate, run the filter scripts followed by the figure scripts.
 
 ---
 
