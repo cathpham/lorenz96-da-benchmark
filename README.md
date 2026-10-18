@@ -17,9 +17,9 @@ Implements and benchmarks four data assimilation filters on the Lorenz-96 system
 1. `filters` contains the implementation of all four data assimilation filters.
    - `pf.py` runs the Bootstrap Particle Filter (Gordon et al. 1993), with kernel jittering adapted from [DAPPER](https://github.com/nansencenter/DAPPER).
    - `enkf.py` runs the Ensemble Kalman Filter (Evensen 1994).
-   - `ensf_1.py` and `ensf_2.py` runs the Ensemble Score Filter (Bao et al. 2024).
+   - `ensf_1.py` and `ensf_2.py` run the Ensemble Score Filter (Bao et al. 2024).
    - `letkf.py` runs the Local Ensemble Transform Kalman Filter (Hunt et al. 2007).
-   - Set `n_dim` at the top of each script, then run PF, EnKF and EnSF for each dimension in `[5, 10, 50]` (Experiment 1), and EnSF and LETKF at `d = 1000` (Experiment 2).
+   - Set `n_dim` at the top of each script, then run PF, EnKF, and EnSF for each dimension in `[5, 10, 50]` (Experiment 1), and EnSF and LETKF at `d = 1000` (Experiment 2).
 
 2. `results` contains the final paper figures as `.png` files.
    - `fig1_rmse_vs_dim.png`: RMSE vs state dimension (`d = 5, 10, 50`) with confidence bands.
@@ -35,7 +35,7 @@ If you use this code, please cite:
 ```bibtex
 @article{pham2026survey,
   title={A Survey of Nonlinear Filtering Methods for Data Assimilation and Recent Advances in Generative AI-Enabled Score Filters},
-  author={Pham, Cath,
+  author={Pham, Cath and Reynolds, Kadesha},
   journal={arXiv preprint},
   year={2026}
 }
