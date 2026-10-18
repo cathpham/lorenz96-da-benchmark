@@ -10,7 +10,7 @@ dtype = torch.float32
 torch.set_default_dtype(dtype)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-forcing = 8.0
+F = 8.0
 n_dim = 5
 dt = 0.01
 filtering_steps = 1500
@@ -44,11 +44,11 @@ print(
 # Lorenz-96
 # ==============================================================================
 def lorenz96_drift(x):
-    return (torch.roll(x, -1, dims=-1) - torch.roll(x, 2, dims=-1)) * torch.roll(x, 1, dims=-1) - x + forcing
+    return (torch.roll(x, -1, dims=-1) - torch.roll(x, 2, dims=-1)) * torch.roll(x, 1, dims=-1) - x + F
 
 
 def lorenz96_drift_numpy(x):
-    return (np.roll(x, -1) - np.roll(x, 2)) * np.roll(x, 1) - x + forcing
+    return (np.roll(x, -1) - np.roll(x, 2)) * np.roll(x, 1) - x + F
 
 
 def rk4_step(x, h):
